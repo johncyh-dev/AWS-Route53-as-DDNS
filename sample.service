@@ -1,0 +1,10 @@
+[Unit]
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 /usr/bin/update-route53-record.py | /usr/bin/tee /var/log/update-route53-record.log
+
+[Install]
+WantedBy=multi-user.target
+
