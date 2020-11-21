@@ -9,7 +9,8 @@ import time
 from configparser import ConfigParser
 
 def get_local_IP():
-    currentIP = urllib.request.urlopen('https://api.ipify.org').read().decode('utf-8')
+    currentIP = urllib.request.urlopen('https://api.ipify.org')
+                              .read().decode('utf-8')
     if not re.match('^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$', currentIP): 
         sys.exit('Invalid IP address: %s' % currentIP)
     return currentIP
@@ -18,10 +19,10 @@ def make_payload(name, resourceRecord):
     with open('route53-crud-sample.json') as sample,\
          open('route53-update.json', 'w') as output:
         data = json.load(sample) 
-        change = data["Changes"][0]
-        change["Action"] = "UPSERT"
-        change["ResourceRecordSet"]["Name"] = name
-        change["ResourceRecordSet"]["ResourceRecords"] = resourceRecord
+        change = data['Changes'][0]
+        change['Action'] = 'UPSERT'
+        change['ResourceRecordSet']['Name'] = name
+        change['ResourceRecordSet']['ResourceRecords'] = resourceRecord
         json.dump(data, output)
 
 def put_record(hostedZoneID):
@@ -52,13 +53,13 @@ def get_update_status(id):
     status = response['ChangeInfo']['Status']
     return status
 
-def main(timeoutInMin=10):
+def main(timeoutInMin = 10):
     config = ConfigParser()
     config.read('.env')
     _hostedZoneID = config['DEFAULT']['HostedZoneID']
     _domainName = config['DEFAULT']['DomainName']
     currentIP = get_local_IP()
-    make_payload(_domainName, [{ "Value": currentIP}])
+    make_payload(_domainName, [{ 'Value': currentIP}])
     print('Calling Route53 Change-resource-record-sets API...')
     id = put_record(_hostedZoneID)
    

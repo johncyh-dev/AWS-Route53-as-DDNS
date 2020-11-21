@@ -4,14 +4,16 @@ It works best with a service which runs upon a network connection has been estab
 
 
 ## Requirement
-+ Python 3.X
++ Python 3.X +
++ AWS CLI 2.X +
 
-
-## Usage example (eg.Ubuntu)
+## Usage Example (eg.Ubuntu)
 1. Prepare a trigger for the script. eg. sample.service
 2. Put the service file under `/lib/systemd/system/`.
 3. Reload to read the newly added service.   
-   `$ sudo systemctl daemon-reload`
+   ```
+   $ sudo systemctl daemon-reload
+   ```
 4. Enable service to start on reboot.  
    ```
    $ sudo systemctl enable sample.service  
